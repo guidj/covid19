@@ -7,7 +7,7 @@ function run(){
     BASEDIR=${DIR}/../
 
     export PYTHONPATH="$BASEDIR/py:$PYTHONPATH"
-    scrapy runspider py/covid19/data/fetch.py "$@"
+    scrapy runspider py/covid19/data/c19se.py "$@"
 }
 
 run "$@"

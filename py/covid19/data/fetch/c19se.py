@@ -12,7 +12,7 @@ class InfectionLog(scrapy.Item):
     count = scrapy.Field()
 
 
-class LocalSpider(scrapy.Spider):
+class C19Spider(scrapy.Spider):
     name = "c19.se - data"
     start_urls = [
         "https://c19.se",

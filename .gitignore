@@ -4,6 +4,6 @@
 
 # data
 *.csv
-
+.*cache/
 # dev
 .idea

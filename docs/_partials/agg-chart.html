@@ -1,0 +1,32 @@
+<head>
+  <style>
+    .error {
+        color: red;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.0.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "layer": [{"data": {"name": "data-1249418a00f80d1cd64726470fa98e63"}, "mark": {"type": "line", "color": "red", "point": true}, "encoding": {"tooltip": {"type": "quantitative", "field": "count"}, "x": {"type": "quantitative", "field": "date", "title": "Date"}, "y": {"type": "quantitative", "field": "count", "title": "# Cases"}}, "height": 400, "selection": {"selector001": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "width": 600}, {"data": {"name": "data-9cd0ee3ce6fd4b989805d01765242887"}, "mark": {"type": "line", "color": "red", "point": true}, "encoding": {"tooltip": {"type": "quantitative", "field": "count"}, "x": {"type": "quantitative", "field": "date", "title": "Date"}, "y": {"type": "quantitative", "field": "count", "title": "# Cases"}}, "height": 400, "selection": {"selector002": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "width": 600}, {"data": {"name": "data-74c895db06546ce6ce8dc17c66170acf"}, "mark": {"type": "line", "color": "red", "point": true}, "encoding": {"tooltip": {"type": "quantitative", "field": "count"}, "x": {"type": "quantitative", "field": "date", "title": "Date"}, "y": {"type": "quantitative", "field": "count", "title": "# Cases"}}, "height": 400, "selection": {"selector003": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "width": 600}], "$schema": "https://vega.github.io/schema/vega-lite/v4.0.0.json", "datasets": {"data-1249418a00f80d1cd64726470fa98e63": [{"date": 0, "count": 5}, {"date": 1, "count": 12}, {"date": 2, "count": 31}, {"date": 3, "count": 78}, {"date": 4, "count": 195}, {"date": 5, "count": 488}, {"date": 6, "count": 1220}, {"date": 7, "count": 3051}, {"date": 8, "count": 7629}, {"date": 9, "count": 19073}, {"date": 10, "count": 47683}, {"date": 11, "count": 119209}, {"date": 12, "count": 298023}, {"date": 13, "count": 745058}, {"date": 14, "count": 1862645}], "data-9cd0ee3ce6fd4b989805d01765242887": [{"date": 0, "count": 5}, {"date": 1, "count": 10}, {"date": 2, "count": 20}, {"date": 3, "count": 40}, {"date": 4, "count": 80}, {"date": 5, "count": 160}, {"date": 6, "count": 320}, {"date": 7, "count": 640}, {"date": 8, "count": 1280}, {"date": 9, "count": 2560}, {"date": 10, "count": 5120}, {"date": 11, "count": 10240}, {"date": 12, "count": 20480}, {"date": 13, "count": 40960}, {"date": 14, "count": 81920}], "data-74c895db06546ce6ce8dc17c66170acf": [{"date": 0, "count": 5}, {"date": 1, "count": 7}, {"date": 2, "count": 11}, {"date": 3, "count": 16}, {"date": 4, "count": 25}, {"date": 5, "count": 37}, {"date": 6, "count": 56}, {"date": 7, "count": 85}, {"date": 8, "count": 128}, {"date": 9, "count": 192}, {"date": 10, "count": 288}, {"date": 11, "count": 432}, {"date": 12, "count": 648}, {"date": 13, "count": 973}, {"date": 14, "count": 1459}]}};
+      var embedOpt = {"renderer": "svg", "mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>

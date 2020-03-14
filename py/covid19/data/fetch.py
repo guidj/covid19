@@ -3,9 +3,7 @@ from typing import Optional, List
 
 import scrapy
 
-SETTINGS = {
-    "USER_AGENT": "BenignHoneyBadger"
-}
+SETTINGS = {"USER_AGENT": "BenignHoneyBadger"}
 
 
 class InfectionLog(scrapy.Item):
@@ -17,7 +15,7 @@ class InfectionLog(scrapy.Item):
 class LocalSpider(scrapy.Spider):
     name = "c19.se - data"
     start_urls = [
-        'https://c19.se',
+        "https://c19.se",
     ]
 
     def parse(self, response):
@@ -55,17 +53,23 @@ def parse_location_from_message(message: str) -> Optional[str]:
                 return fn(items[1:], parts)
             else:
                 return " ".join(parts)
+
         return fn(tokens, [])
 
     def fn(tokens: List[str]):
         if not tokens:
             return None
         if tokens[0] in ("i", "från") and len(tokens) > 0:
-            if tokens[1] in ("region", "Region") and len(tokens) > 1 and tokens[2][0].isupper():
+            if (
+                tokens[1] in ("region", "Region")
+                and len(tokens) > 1
+                and tokens[2][0].isupper()
+            ):
                 return maybe_parse_multi_part_name(tokens[2:])
             elif tokens[1][0].isupper():
                 return maybe_parse_multi_part_name(tokens[1:])
         return fn(tokens[1:])
+
     return fn(message.split(" "))
 
 

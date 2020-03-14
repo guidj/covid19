@@ -1,0 +1,32 @@
+<head>
+  <style>
+    .error {
+        color: red;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.0.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "layer": [{"data": {"name": "data-4cbceee64e4736c0c7913f854dabb004"}, "mark": {"type": "line", "color": "red", "point": true}, "encoding": {"color": {"type": "nominal", "field": "growth_rate", "title": "Growth Rate"}, "tooltip": {"type": "quantitative", "field": "count"}, "x": {"type": "quantitative", "field": "date", "title": "Date"}, "y": {"type": "quantitative", "field": "count", "title": "# Cases"}}, "height": 400, "selection": {"selector003": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "width": 600}, {"data": {"name": "data-1db1ea20198864682259dcdc58de2bd5"}, "mark": {"type": "line", "color": "red", "point": true}, "encoding": {"color": {"type": "nominal", "field": "growth_rate", "title": "Growth Rate"}, "tooltip": {"type": "quantitative", "field": "count"}, "x": {"type": "quantitative", "field": "date", "title": "Date"}, "y": {"type": "quantitative", "field": "count", "title": "# Cases"}}, "height": 400, "selection": {"selector004": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "width": 600}, {"data": {"name": "data-d05930904efd23d316f855a6b5c98c49"}, "mark": {"type": "line", "color": "red", "point": true}, "encoding": {"color": {"type": "nominal", "field": "growth_rate", "title": "Growth Rate"}, "tooltip": {"type": "quantitative", "field": "count"}, "x": {"type": "quantitative", "field": "date", "title": "Date"}, "y": {"type": "quantitative", "field": "count", "title": "# Cases"}}, "height": 400, "selection": {"selector005": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "width": 600}], "title": "Exponential Growth", "$schema": "https://vega.github.io/schema/vega-lite/v4.0.0.json", "datasets": {"data-4cbceee64e4736c0c7913f854dabb004": [{"date": 0, "count": 5, "growth_rate": 2.5}, {"date": 1, "count": 12, "growth_rate": 2.5}, {"date": 2, "count": 31, "growth_rate": 2.5}, {"date": 3, "count": 78, "growth_rate": 2.5}, {"date": 4, "count": 195, "growth_rate": 2.5}, {"date": 5, "count": 488, "growth_rate": 2.5}, {"date": 6, "count": 1220, "growth_rate": 2.5}, {"date": 7, "count": 3051, "growth_rate": 2.5}, {"date": 8, "count": 7629, "growth_rate": 2.5}, {"date": 9, "count": 19073, "growth_rate": 2.5}, {"date": 10, "count": 47683, "growth_rate": 2.5}, {"date": 11, "count": 119209, "growth_rate": 2.5}, {"date": 12, "count": 298023, "growth_rate": 2.5}, {"date": 13, "count": 745058, "growth_rate": 2.5}, {"date": 14, "count": 1862645, "growth_rate": 2.5}], "data-1db1ea20198864682259dcdc58de2bd5": [{"date": 0, "count": 5, "growth_rate": 2.0}, {"date": 1, "count": 10, "growth_rate": 2.0}, {"date": 2, "count": 20, "growth_rate": 2.0}, {"date": 3, "count": 40, "growth_rate": 2.0}, {"date": 4, "count": 80, "growth_rate": 2.0}, {"date": 5, "count": 160, "growth_rate": 2.0}, {"date": 6, "count": 320, "growth_rate": 2.0}, {"date": 7, "count": 640, "growth_rate": 2.0}, {"date": 8, "count": 1280, "growth_rate": 2.0}, {"date": 9, "count": 2560, "growth_rate": 2.0}, {"date": 10, "count": 5120, "growth_rate": 2.0}, {"date": 11, "count": 10240, "growth_rate": 2.0}, {"date": 12, "count": 20480, "growth_rate": 2.0}, {"date": 13, "count": 40960, "growth_rate": 2.0}, {"date": 14, "count": 81920, "growth_rate": 2.0}], "data-d05930904efd23d316f855a6b5c98c49": [{"date": 0, "count": 5, "growth_rate": 1.5}, {"date": 1, "count": 7, "growth_rate": 1.5}, {"date": 2, "count": 11, "growth_rate": 1.5}, {"date": 3, "count": 16, "growth_rate": 1.5}, {"date": 4, "count": 25, "growth_rate": 1.5}, {"date": 5, "count": 37, "growth_rate": 1.5}, {"date": 6, "count": 56, "growth_rate": 1.5}, {"date": 7, "count": 85, "growth_rate": 1.5}, {"date": 8, "count": 128, "growth_rate": 1.5}, {"date": 9, "count": 192, "growth_rate": 1.5}, {"date": 10, "count": 288, "growth_rate": 1.5}, {"date": 11, "count": 432, "growth_rate": 1.5}, {"date": 12, "count": 648, "growth_rate": 1.5}, {"date": 13, "count": 973, "growth_rate": 1.5}, {"date": 14, "count": 1459, "growth_rate": 1.5}]}};
+      var embedOpt = {"renderer": "svg", "mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>

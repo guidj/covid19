@@ -1,5 +1,5 @@
 ---
-title: "COVID19: Growth Rate Monitoring"
+title: "COVID19: Monitoring"
 ---
 
 # COVID-19 Monitoring

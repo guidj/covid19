@@ -1,13 +1,12 @@
 ---
 title: "COVID19 Monitoring"
+layout: default
 navigation_weight: 1
 ---
 
 # COVID-19 Monitoring
 
-{% include_relative _partials/head.html %}
 {% include_relative _partials/agg-chart.html %}
-
 
 We monitor the number of confirmed cases and growth rate to understand how quickly we can expect
 the virus to spread. There are caveats with this last measure:

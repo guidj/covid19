@@ -1,8 +1,8 @@
 ---
 title: "Virality Simulation"
+layout: default
 navigation_weight: 2
 ---
-{% include_relative _partials/head.html %}
 
 # Virality
 

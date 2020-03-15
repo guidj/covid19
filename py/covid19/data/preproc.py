@@ -1,5 +1,4 @@
 import argparse
-import collections
 import datetime
 import os.path
 from typing import Dict, Set
@@ -53,9 +52,9 @@ def process_data_from_jhu(input_path: str, output_path: str):
     )
 
     df_world_agg_growth_rate = pd.DataFrame({"date": df_world_agg_confirmed["date"]})
-    df_world_agg_growth_rate["growth_rate"] = df_world_agg_confirmed["count"].astype(
-        float
-    ) / pd.Series([0] + list(df_world_agg_confirmed["count"].values[:-1])).astype(float)
+    df_world_agg_growth_rate["growth_rate"] = compute_rate_of_new_cases(
+        df_world_agg_confirmed["count"]
+    )
 
     df_region_agg_confirmed.to_csv(
         os.path.join(output_path, constants.FILE_REGION_AGG_JHU_CONFIRMED),
@@ -90,14 +89,19 @@ def generate_regional_growth_rate_metrics(
             df_region_agg_confirmed["location"] == location
         ].copy()
         df_location = df_location.reset_index(drop=True)
-        df_location["growth_rate"] = df_location["count"].astype(float) / pd.Series(
-            [0] + list(df_location["count"].values[:-1])
-        ).astype(float)
+        df_location["growth_rate"] = compute_rate_of_new_cases(df_location["count"])
         dfs.append(df_location)
 
     df = pd.concat(dfs, axis=0)
 
     return df
+
+
+def compute_rate_of_new_cases(count: pd.Series) -> pd.Series:
+    growth_rate = count.astype(float) / pd.Series([0] + list(count.values[:-1])).astype(
+        float
+    )
+    return growth_rate.map(lambda x: round(x, ndigits=3))
 
 
 def read_proc_data(path: str):

@@ -4,6 +4,7 @@ title: "COVID19: Growth Rate Monitoring"
 
 # COVID-19 Monitoring
 
+{% include_relative _partials/head.html %}
 {% include_relative _partials/agg-chart.html %}
 
 
@@ -18,6 +19,12 @@ the virus to spread. There are caveats with this last measure:
   - The disease is spreading at different rates around the world. The growth chart on top
   aggregates cases from everywhere, so expect regional variances depending on where you are.
   
-  
-  
+
+
+To bette understand the impact of the growth rate, refer to the [virality page](virality-simulation.html). Basic guidance:
+
+  - $$\theta < 1.0$$: means there are less new cases each day compared to the previous day.
+  - $$\theta > 1.0$$: means there are more new cases each day compared to the previous day.
+  - $$\theta > 2.0$$: means we have a very serious problem!
+
 Note: data is pulled from the [Johns Hopkins CSSE COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19).

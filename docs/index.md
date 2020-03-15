@@ -29,4 +29,5 @@ Basic guidance:
   - $$\theta > 1.0$$: means there are more new cases each day compared to the previous day.
   - $$\theta > 2.0$$: means we have a very serious problem!
 
-Note: data is pulled from the [Johns Hopkins CSSE COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19).
+Note: data is pulled from the [Johns Hopkins CSSE COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19),
+and updated daily.

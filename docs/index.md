@@ -1,5 +1,5 @@
 ---
-title: "COVID19: Monitoring"
+title: "COVID19 Monitoring"
 navigation_weight: 1
 ---
 

@@ -14,7 +14,7 @@
     {% for p in navigation_pages %}
       {% if p.navigation_weight %}
         <li class="nav-item">
-          <a class="nav-link {% if p.url == page.url %}active{% endif %}" href="{{ p.url }}">
+          <a class="nav-link {% if p.url == page.url %}active{% endif %}" href="{{ site.baseurl | append: p.url }}">
             {{ p.title }}
           </a>
         </li>

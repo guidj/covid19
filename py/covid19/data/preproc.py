@@ -100,46 +100,6 @@ def generate_regional_growth_rate_metrics(
     return df
 
 
-def process_data_from_cs19se(input_path: str, output_path: str):
-    """
-    Expected format
-    | count | location  |    date    |
-    |   1   | Stockholm | 2020-01-01 |
-    """
-    df_source = pd.read_csv(
-        input_path,
-        header="infer",
-        dtype={"count": "int64", "location": "category"},
-        parse_dates=["date"],
-    )
-    start_date = df_source["date"].min()
-    end_date = df_source["date"].max()
-    locations = set(df_source["location"].unique())
-    keys = {col: i for i, col in enumerate(df_source.columns)}
-    values = collections.defaultdict(lambda: collections.defaultdict(int))
-    for row in df_source.values:
-        location = row[keys["location"]]
-        date = row[keys["date"]]
-        values[date][location] += row[keys["count"]]
-
-    df_entries = generate_entries_spanning_period(
-        start_date, end_date=end_date, values=values, locations=locations
-    )
-    df_agg = df_entries.loc[:, ["date", "count"]].groupby(["date"]).sum().reset_index()
-
-    if not os.path.exists(output_path):
-        os.makedirs(output_path)
-    df_agg["growth_rate"] = df_agg["count"].astype(float) / pd.Series(
-        [0] + list(df_agg["count"].values[:-1])
-    ).astype(float)
-    df_agg.to_csv(
-        os.path.join(output_path, constants.FILE_SE_AGG), index=False, header=True,
-    )
-    df_entries.to_csv(
-        os.path.join(output_path, constants.FILE_SE_PROVINCE), index=False, header=True
-    )
-
-
 def read_proc_data(path: str):
     df_region_agg_confirmed = pd.read_csv(
         os.path.join(path, constants.FILE_REGION_AGG_JHU_CONFIRMED),

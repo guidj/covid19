@@ -5,11 +5,11 @@ title: "Virality Simulation"
 
 # Virality
 
-Here, I briefly discuss the growth rate of the number of confirmed cases.
+Here, I briefly discuss the rate of new cases of confirmed cases.
 Back in late January, the number of confirmed cases started spiking.
 On the 28th of January, it was around 1.9.
 
-To understand the importance of monitoring the growth rate, we can do a simulation.
+To understand the importance of monitoring the rate of new cases, we can do a simulation.
 In the chart below, we plot the number of cases that would exist in the world
 comparing three different rates: 1.5, 2.0, and 2.5.
 
@@ -29,7 +29,7 @@ $$
 \end{align*}
 $$
 
-A few days before the growth peak in January, measures were put in place in Wuhan to
+A few days before the rate peaked in January, measures were put in place in Wuhan to
 prevent further spread of the virus. 
 While unprecedented, I believe they played a non-trivial role in diminishing exposure.
 Likewise, around the world, actions that reduce the exposure of the virus, such as

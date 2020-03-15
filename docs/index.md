@@ -30,4 +30,4 @@ Basic guidance:
   - $$\theta > 2.0$$: means we have a very serious problem!
 
 Note: data is pulled from the [Johns Hopkins CSSE COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19),
-and updated daily.
+and updated daily. They have a [geo dashboard with more information](https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6).

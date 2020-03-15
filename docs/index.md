@@ -22,7 +22,7 @@ the virus to spread. There are caveats with this last measure:
   
 
 
-To better understand the impact of the growth rate, refer to the [virality page]({% link virality-simulation.md %}). 
+To better understand the impact of the growth rate, refer to the [virality page]({{ site.baseurl }}{% link virality-simulation.md %}). 
 Basic guidance:
 
   - $$\theta < 1.0$$: means there are less new cases each day compared to the previous day.

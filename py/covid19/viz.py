@@ -214,7 +214,7 @@ def create_viz_region_confirmed_and_rate(
             alt.X("date", title="Date"),
             alt.Y("growth_rate", title="Rate of New Cases"),
             color=color,
-            tooltip="count",
+            tooltip="growth_rate",
         )
         .add_selection(single_selector)
         .transform_filter(single_selector)

@@ -13,7 +13,7 @@ function run(){
     else
       git clone git@github.com:CSSEGISandData/COVID-19.git $BASEDIR/data/jhu
     fi;
-    head -n 10 $BASEDIR/data/jhu/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv
+    head -n 10 $BASEDIR/data/jhu/archived_data/archived_time_series/time_series_19-covid-Confirmed_archived_0325.csv
 
 }
 

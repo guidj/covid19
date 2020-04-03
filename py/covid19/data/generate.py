@@ -3,6 +3,8 @@ import math
 
 import pandas as pd
 
+from covid19 import typedef
+
 
 def generate_infection_projection_data(
     start_date: datetime.date,
@@ -16,4 +18,11 @@ def generate_infection_projection_data(
     for day in range(days):
         cases = int(starting_cases * math.pow(growth_rate, day))
         entries.append([day, cases, growth_rate])
-    return pd.DataFrame(entries, columns=["date", "count", "growth_rate"])
+    return pd.DataFrame(
+        entries,
+        columns=[
+            typedef.Columns.DATE,
+            typedef.Columns.CONFIRMED,
+            typedef.Columns.GROWTH_RATE,
+        ],
+    )

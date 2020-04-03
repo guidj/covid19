@@ -6,6 +6,7 @@ import altair as alt
 import datetime
 import pandas as pd
 
+from covid19 import typedef
 from covid19.data import preproc
 from covid19.data import generate
 
@@ -30,10 +31,10 @@ def create_viz_growth_simulation(charts_path: str) -> None:
         alt.Chart(df_sim_a)
         .mark_line(point=True, color="red")
         .encode(
-            alt.X("date", title="Date"),
-            alt.Y("count", title="# Cases"),
-            color=alt.Color("growth_rate:N", title="Growth Rate"),
-            tooltip="count",
+            alt.X(typedef.Columns.DATE, title="Date"),
+            alt.Y(typedef.Columns.CONFIRMED, title="# Cases"),
+            color=alt.Color("%s:N" % typedef.Columns.GROWTH_RATE, title="Growth Rate"),
+            tooltip="%s:N" % typedef.Columns.CONFIRMED,
         )
         .interactive()
         .properties(width=600, height=400)
@@ -43,10 +44,10 @@ def create_viz_growth_simulation(charts_path: str) -> None:
         alt.Chart(df_sim_b)
         .mark_line(point=True, color="red")
         .encode(
-            alt.X("date", title="Date"),
-            alt.Y("count", title="# Cases"),
-            color=alt.Color("growth_rate:N", title="Growth Rate"),
-            tooltip="count",
+            alt.X(typedef.Columns.DATE, title="Date"),
+            alt.Y(typedef.Columns.CONFIRMED, title="# Cases"),
+            color=alt.Color("%s:N" % typedef.Columns.GROWTH_RATE, title="Growth Rate"),
+            tooltip="%s:N" % typedef.Columns.CONFIRMED,
         )
         .interactive()
         .properties(width=600, height=400)
@@ -56,10 +57,10 @@ def create_viz_growth_simulation(charts_path: str) -> None:
         alt.Chart(df_sim_c)
         .mark_line(point=True, color="red")
         .encode(
-            alt.X("date", title="Date"),
-            alt.Y("count", title="# Cases"),
-            color=alt.Color("growth_rate:N", title="Growth Rate"),
-            tooltip="count",
+            alt.X(typedef.Columns.DATE, title="Date"),
+            alt.Y(typedef.Columns.CONFIRMED, title="# Cases"),
+            color=alt.Color("%s:N" % typedef.Columns.GROWTH_RATE, title="Growth Rate"),
+            tooltip="%s:N" % typedef.Columns.CONFIRMED,
         )
         .interactive()
         .properties(width=600, height=400)
@@ -92,9 +93,9 @@ def create_viz_world_confirmed_and_rate(
         alt.Chart(df_world_agg_confirmed)
         .mark_line(point=True, color="red")
         .encode(
-            alt.X("date", title="Date"),
-            alt.Y("count", title="# Cases"),
-            tooltip="count",
+            alt.X(typedef.Columns.DATE, title="Date"),
+            alt.Y(typedef.Columns.CONFIRMED, title="# Cases"),
+            tooltip=typedef.Columns.CONFIRMED,
         )
         .properties(width=600, height=400)
     ).properties(title="Global # Confirmed Cases")
@@ -103,9 +104,9 @@ def create_viz_world_confirmed_and_rate(
         alt.Chart(df_world_agg_growth_rate)
         .mark_line(point=True, color="red")
         .encode(
-            alt.X("date", title="Date"),
-            alt.Y("growth_rate", title="Rate of New Cases"),
-            tooltip="growth_rate",
+            alt.X(typedef.Columns.DATE, title="Date"),
+            alt.Y(typedef.Columns.GROWTH_RATE, title="Rate of New Cases"),
+            tooltip="%s:N" % typedef.Columns.GROWTH_RATE,
         )
         .properties(width=600, height=120, title="Global Rate of New Cases")
     )
@@ -123,14 +124,14 @@ def create_viz_world_confirmed_and_rate(
         add_ruler_as_selector_on_single_line_chart(
             world_agg_confirmed_chart,
             df_world_agg_confirmed,
-            x_field="date",
-            y_field="count",
+            x_field=typedef.Columns.DATE,
+            y_field=typedef.Columns.CONFIRMED,
         ),
         add_ruler_as_selector_on_single_line_chart(
             world_agg_growth_rate_chart,
             df_world_agg_growth_rate,
-            x_field="date",
-            y_field="growth_rate",
+            x_field=typedef.Columns.DATE,
+            y_field=typedef.Columns.GROWTH_RATE,
         ),
     ).save(viz_path, embed_options={"renderer": "svg"})
 
@@ -140,7 +141,11 @@ def add_ruler_as_selector_on_single_line_chart(
 ) -> Any:
     # Create a selection that chooses the nearest point & selects based on x-value
     nearest = alt.selection(
-        type="single", nearest=True, on="mouseover", fields=["date"], empty="none",
+        type="single",
+        nearest=True,
+        on="mouseover",
+        fields=[typedef.Columns.DATE],
+        empty="none",
     )
 
     # Transparent selectors across the chart. This is what tells us
@@ -185,23 +190,25 @@ def create_viz_region_confirmed_and_rate(
     choices = sorted(list(df_region_agg_confirmed["location"].unique()))
     input_dropdown = alt.binding_select(options=choices)
     single_selector = alt.selection_single(
-        fields=["location"],
+        fields=[typedef.Columns.REGION],
         bind=input_dropdown,
         name="Location",
-        init={"location": choices[0]},
+        init={typedef.Columns.REGION: choices[0]},
     )
     color = alt.condition(
-        single_selector, alt.Color("location:N", legend=None), alt.value("lightgray"),
+        single_selector,
+        alt.Color("%s:N" % typedef.Columns.REGION, legend=None),
+        alt.value("lightgray"),
     )
 
     region_agg_confirmed_chart = (
         alt.Chart(df_region_agg_confirmed)
         .mark_line(point=True)
         .encode(
-            alt.X("date", title="Date"),
-            alt.Y("count", title="# New Cases"),
+            alt.X(typedef.Columns.DATE, title="Date"),
+            alt.Y(typedef.Columns.CONFIRMED, title="# New Cases"),
             color=color,
-            tooltip="count",
+            tooltip=typedef.Columns.CONFIRMED,
         )
         .add_selection(single_selector)
         .transform_filter(single_selector)
@@ -211,10 +218,10 @@ def create_viz_region_confirmed_and_rate(
         alt.Chart(df_region_agg_growth_rate)
         .mark_line(point=True)
         .encode(
-            alt.X("date", title="Date"),
-            alt.Y("growth_rate", title="Rate of New Cases"),
+            alt.X(typedef.Columns.DATE, title="Date"),
+            alt.Y(typedef.Columns.GROWTH_RATE, title="Rate of New Cases"),
             color=color,
-            tooltip="growth_rate",
+            tooltip=typedef.Columns.GROWTH_RATE,
         )
         .add_selection(single_selector)
         .transform_filter(single_selector)

@@ -1,12 +1,20 @@
 import argparse
+import copy
 import datetime
 import os.path
 from typing import Dict, Set, List
+import dataclasses
 
 import pandas as pd
-
+import calendar
 from covid19 import constants
 from covid19 import typedef
+
+
+@dataclasses.dataclass(frozen=True)
+class Args:
+    input_path: str
+    output_path: str
 
 
 def generate_entries_spanning_period(
@@ -54,10 +62,12 @@ def read_jhu_log(file_path: str) -> pd.DataFrame:
     ]
     df_daily[typedef.Columns.DATE] = date
 
-    for column_name, _type in typedef.Columns.type_mapping().items():
-        if _type == "int64":
+    for column_name, type_ in typedef.Columns.type_mapping().items():
+        if type_ == "int64":
             df_daily[column_name] = df_daily[column_name].fillna(0)
-        df_daily[column_name] = df_daily[column_name].astype(_type)
+        elif type_ == "category":
+            df_daily[column_name] = df_daily[column_name].apply(lambda element: element.strip())
+        df_daily[column_name] = df_daily[column_name].astype(type_)
     return df_daily
 
 
@@ -178,15 +188,38 @@ def read_proc_data(path: str) -> Dict[str, pd.DataFrame]:
         },
         parse_dates=[typedef.Columns.DATE],
     )
-    return {
-        "region-agg-confirmed": df_region_agg_confirmed,
-        "region-agg-growth-rate": df_region_agg_growth_rate,
-        "world-agg-confirmed": df_world_agg_confirmed,
-        "world-agg-growth-rate": df_world_agg_growth_rate,
+    datasets = {
+        "region-agg-confirmed": filter_dates(df_region_agg_confirmed, "months"),
+        "region-agg-growth-rate": filter_dates(df_region_agg_growth_rate, "months"),
+        "world-agg-confirmed": filter_dates(df_world_agg_confirmed, "weeks"),
+        "world-agg-growth-rate": filter_dates(df_world_agg_growth_rate, "weeks"),
     }
 
+    return datasets
 
-def parse_args():
+
+def filter_dates(df: pd.DataFrame, type_: str) -> pd.DataFrame:
+    def is_end_of_month(date: datetime.date) -> bool:
+        (_, last_day) = calendar.monthrange(date.year, date.month)
+        return date.day == last_day
+    
+    def is_week_start(date: datetime.date) -> bool:
+        # We consider Mondays the
+        # beginning the week.
+        return date.weekday() == 0
+    
+    if type_ == "months":
+        filter_fn = is_end_of_month
+    elif type_ == "weeks":
+        filter_fn = is_week_start
+    else:
+        raise ValueError(f"Unknown filter {type_}")
+    mask = df["date"].map(filter_fn)
+    return copy.deepcopy(df[mask])
+    # return df_.resample("M", "first").reset_index()
+
+
+def parse_args() -> Args:
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument(
         "--input-path", required=True, help="Path to csv file with CV19 data"
@@ -194,7 +227,8 @@ def parse_args():
     arg_parser.add_argument(
         "--output-path", required=True, help="Dir to save csv with processed data"
     )
-    return arg_parser.parse_args()
+    kwargs, _ = arg_parser.parse_known_args()
+    return Args(**vars(kwargs))
 
 
 if __name__ == "__main__":

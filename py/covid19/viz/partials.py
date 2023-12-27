@@ -3,15 +3,23 @@ Module for post processing files for website
 Generates partials with visualizations.
 """
 import argparse
-import html.parser
 import os
 import os.path
-from typing import List
+from typing import List, Sequence
+import dataclasses
 
 import scrapy
+import scrapy.http
 
 
-def parse_args() -> argparse.Namespace:
+@dataclasses.dataclass(frozen=True)
+class Args:
+    plots_path: str
+    files: Sequence[str]
+    output_path: str
+
+
+def parse_args() -> Args:
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument(
         "--plots-path", required=True, help="Dir with global and region plots"
@@ -20,17 +28,17 @@ def parse_args() -> argparse.Namespace:
     arg_parser.add_argument(
         "--output-path", required=True, help="Path to output partials"
     )
-    return arg_parser.parse_args()
+    kwargs, _ = arg_parser.parse_known_args()
+    return Args(**vars(kwargs))
 
 
 def remove_tags(content: str, tag: str) -> str:
-    return content.lstrip("<{}>".format(tag)).rstrip("</{}>".format(tag)).strip()
+    return content.lstrip(f"<{tag}>").rstrip(f"</{tag}>").strip()
 
 
 def generate_partials(plots_path: str, files: List[str], output_path: str) -> None:
     for file_name in files:
         file_path = os.path.join(plots_path, file_name)
-        _, extension = os.path.splitext(file_path)
         output_file_name = os.path.join(output_path, file_name)
 
         with open(file_path) as file:

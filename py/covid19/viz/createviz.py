@@ -1,6 +1,8 @@
 import argparse
+import copy
 import os.path
 from typing import Dict, Any
+import dataclasses
 
 import altair as alt
 import datetime
@@ -9,6 +11,11 @@ import pandas as pd
 from covid19 import typedef
 from covid19.data import preproc
 from covid19.data import generate
+
+
+@dataclasses.dataclass(frozen=True)
+class Args:
+    data_path: str
 
 
 def create_viz_growth_simulation(charts_path: str) -> None:
@@ -140,12 +147,10 @@ def add_ruler_as_selector_on_single_line_chart(
     chart: Any, df: pd.DataFrame, x_field: str, y_field: str
 ) -> Any:
     # Create a selection that chooses the nearest point & selects based on x-value
-    nearest = alt.selection(
-        type="single",
+    nearest = alt.selection_point(
         nearest=True,
         on="mouseover",
         fields=[typedef.Columns.DATE],
-        empty="none",
     )
 
     # Transparent selectors across the chart. This is what tells us
@@ -154,7 +159,7 @@ def add_ruler_as_selector_on_single_line_chart(
         alt.Chart(df)
         .mark_point()
         .encode(x=x_field, opacity=alt.value(0), tooltip=alt.Tooltip(y_field),)
-        .add_selection(nearest)
+        .add_params(nearest)
     )
 
     # Draw points on the line, and highlight based on selection
@@ -189,11 +194,11 @@ def create_viz_region_confirmed_and_rate(
 
     choices = sorted(list(df_region_agg_confirmed["location"].unique()))
     input_dropdown = alt.binding_select(options=choices)
-    single_selector = alt.selection_single(
+    single_selector = alt.selection_point(
         fields=[typedef.Columns.REGION],
         bind=input_dropdown,
         name="Location",
-        init={typedef.Columns.REGION: choices[0]},
+        # value={typedef.Columns.REGION: choices[0]},
     )
     color = alt.condition(
         single_selector,
@@ -210,7 +215,7 @@ def create_viz_region_confirmed_and_rate(
             color=color,
             tooltip=typedef.Columns.CONFIRMED,
         )
-        .add_selection(single_selector)
+        .add_params(single_selector)
         .transform_filter(single_selector)
     )
 
@@ -223,7 +228,7 @@ def create_viz_region_confirmed_and_rate(
             color=color,
             tooltip=typedef.Columns.GROWTH_RATE,
         )
-        .add_selection(single_selector)
+        .add_params(single_selector)
         .transform_filter(single_selector)
     )
 
@@ -235,12 +240,12 @@ def create_viz_region_confirmed_and_rate(
 def add_ruler_to_multi_line_chart(
     df: pd.DataFrame, x: (str, str), category: (str, str), line: Any,
 ) -> Any:
-    x_field, x_title = x
-    category_field, category_title = category
+    x_field, _ = x
+    category_field, _ = category
 
     # Create a selection that chooses the nearest point & selects based on x-value
-    nearest = alt.selection(
-        type="single", nearest=True, on="mouseover", fields=[x_field], empty="none"
+    nearest = alt.selection_point(
+        nearest=True, on="mouseover", fields=[x_field]
     )
 
     # Transparent selectors across the chart. This is what tells us
@@ -249,7 +254,7 @@ def add_ruler_to_multi_line_chart(
         alt.Chart(df)
         .mark_point()
         .encode(x=x_field, opacity=alt.value(0),)
-        .add_selection(nearest)
+        .add_params(nearest)
     )
 
     # Draw points on the line, and highlight based on selection
@@ -274,12 +279,13 @@ def add_ruler_to_multi_line_chart(
     return alt.layer(line, selectors, points, rules, text)
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args() -> Args:
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument(
         "--data-path", required=True, help="Dir with processed data"
     )
-    return arg_parser.parse_args()
+    kwargs, _ = arg_parser.parse_known_args()
+    return Args(**vars(kwargs))
 
 
 def main(data_path: str):
@@ -293,5 +299,8 @@ def main(data_path: str):
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    main(args.data_path)
+    # args = parse_args()
+    main(
+        # args.data_path
+        "/Users/guilherme/code/covid19/data/jhu/processed"
+        )

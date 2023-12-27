@@ -26,5 +26,5 @@ class Columns:
             cls.CONFIRMED: "int64",
             cls.DEATHS: "int64",
             cls.RECOVERED: "int64",
-            cls.DATE: "datetime64",
+            cls.DATE: "datetime64[ns]",
         }

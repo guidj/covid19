@@ -11,8 +11,9 @@ navigation_weight: 1
 We monitor the number of confirmed cases and growth rate to understand how quickly we can expect
 the virus to spread. There are caveats with this last measure:
 
-   - It's computed based on the number of confirmed cases each day. Given that the virus
-   has an [estimated incubation period of 5 days](https://annals.org/aim/fullarticle/2762808/incubation-period-coronavirus-disease-2019-covid-19-from-publicly-reported),
+   - It's computed based on the number of confirmed cases reported.
+   For global plots we use weekly data (Mondays), regional plots we use monthly data (last day of the month).
+   Given that the virus has an [estimated incubation period of 5 days](https://annals.org/aim/fullarticle/2762808/incubation-period-coronavirus-disease-2019-covid-19-from-publicly-reported),
    there are likely more sick people each day than accounted for. This is compounded by cases
    that simply haven't been tested. This means *we can expect the actual rate to be higher
    than the one reported here*.
